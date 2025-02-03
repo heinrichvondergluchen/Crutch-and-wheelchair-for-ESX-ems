@@ -1,0 +1,114 @@
+/* Nulstilling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+  }
+  
+  /* Overlay baggrund: mørk semitransparent */
+  #overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.6); /* Mørk, semitransparent */
+    z-index: 999;               /* Ligger over spillet, men under menuContainer */
+  }
+  
+  /* Den centrale menu-boks */
+  .menu-container {
+    position: absolute;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    max-width: 90%;
+    padding: 24px;
+  
+    background-color: #2C3E50;  /* Mørkeblå nuance */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    color: #ECF0F1;       /* Lysegråt/hvidt font mod mørk baggrund */
+    z-index: 1000;        /* Over overlay */
+  
+    animation: fadeDown 0.3s ease-out;
+  }
+  
+  /* Overskrift */
+  .menu-container h1 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #fff;
+  }
+  
+  /* Radioknapper */
+  .radio-row {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  
+  .radio-row label {
+    font-size: 16px;
+    color: #ECF0F1;
+  }
+  
+  .radio-row input[type="radio"] {
+    margin-right: 6px;
+  }
+  
+  /* Labels + selects */
+  label {
+    display: block;
+    text-align: left;
+    margin: 10px 0 5px;
+    font-weight: 500;
+  }
+  
+  select {
+    width: 100%;
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #34495E;
+    margin-bottom: 15px;
+    outline: none;
+    background-color: #34495E; 
+    color: #ECF0F1;
+  }
+  
+  /* Knapper */
+  .button-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  
+  button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 14px;
+  }
+  
+  button:hover {
+    background-color: #2980b9;
+  }
+  
+  /* FadeDown animation */
+  @keyframes fadeDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-15px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

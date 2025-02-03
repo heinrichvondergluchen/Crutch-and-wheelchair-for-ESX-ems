@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>EMS Udstyr</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Mørk overlay, gemt fra start -->
+  <div id="overlay" style="display:none;"></div>
+
+  <!-- Selve menu-boksen, også gemt fra start -->
+  <div id="menuContainer" class="menu-container" style="display:none;">
+    <h1>EMS Udstyr</h1>
+
+    <div class="radio-row">
+      <label>
+        <input type="radio" name="equipmentType" value="krykker" checked />
+        Krykker
+      </label>
+      <label>
+        <input type="radio" name="equipmentType" value="kørestol" />
+        Kørestol
+      </label>
+    </div>
+
+    <label for="playerSelect">Spiller i nærheden:</label>
+    <select id="playerSelect"></select>
+
+    <label for="durationSelect">Varighed (minutter):</label>
+    <select id="durationSelect"></select>
+
+    <div class="button-row">
+      <button id="applyBtn">Anvend</button>
+      <button id="closeBtn">Luk</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
