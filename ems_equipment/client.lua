@@ -215,7 +215,8 @@ local function DetachCrutchToGround()
     local playerPed = PlayerPedId()
     if crutchObject then
         DetachEntity(crutchObject, true, true)
-        ClearPedTasksImmediately(playerPed)
+        -- Fjernet ClearPedTasksImmediately for at undgå, at animationen fryser:
+        -- ClearPedTasksImmediately(playerPed)
 
         SetEntityAsMissionEntity(crutchObject, true, true)
 
@@ -227,6 +228,7 @@ local function DetachCrutchToGround()
         crutchObject = nil
     end
 end
+
 
 ------------------------------------------------------------
 -- Overvågningstråde til crutch
@@ -385,16 +387,31 @@ function EquipWheelchair(duration)
 
     local wheelchair = CreateVehicle(wheelchairModelHash, playerCoords.x, playerCoords.y, groundZ, GetEntityHeading(playerPed), true, false)
     TaskWarpPedIntoVehicle(playerPed, wheelchair, -1)
+    
+    -- Forhindr at spilleren bliver sparket ud af kørestolen ved kollisioner eller ragdoll
+    SetPedCanBeKnockedOffVehicle(playerPed, false)
+    -- Lås kørestolen, så ingen andre kan tage den
+    SetVehicleDoorsLocked(wheelchair, 2)  -- 2 = låst for alle undtagen føreren
 
     activeEquipment = "kørestol"
     wheelchairActive = true
     currentWheelchair = wheelchair
 
+    -- Bloker F (Exit) mens stolen er aktiv
     CreateThread(function()
-        -- Bloker F (Exit) mens stolen er aktiv
         while wheelchairActive and DoesEntityExist(currentWheelchair) do
             DisableControlAction(0, 75, true)
             Wait(0)
+        end
+    end)
+    
+    -- Sørg for, at spilleren bliver i kørestolen, hvis de af en eller anden grund kommer ud
+    CreateThread(function()
+        while wheelchairActive and DoesEntityExist(currentWheelchair) do
+            if GetVehiclePedIsIn(PlayerPedId(), false) ~= currentWheelchair then
+                TaskWarpPedIntoVehicle(PlayerPedId(), currentWheelchair, -1)
+            end
+            Wait(100)
         end
     end)
 
@@ -403,6 +420,8 @@ function EquipWheelchair(duration)
         if DoesEntityExist(currentWheelchair) then
             DeleteVehicle(currentWheelchair)
         end
+        -- Giv spilleren lov til at blive sparket ud af køretøjer igen
+        SetPedCanBeKnockedOffVehicle(playerPed, true)
         activeEquipment = nil
         wheelchairActive = false
         ESX.ShowNotification('Kørestolen er nu fjernet.')
@@ -429,7 +448,7 @@ end)
 ------------------------------------------------------------
 -- 5) NUI Callbacks
 --   -> "chooseEquipment": 
---        * TriggerServerEvent('ems:applyEquipment', ...)
+--        * TriggerServerEvent('ems:applyEquipment', ... )
 --   -> "closeMenu": 
 --        * Bare luk menu, sæt fokus false.
 ------------------------------------------------------------
